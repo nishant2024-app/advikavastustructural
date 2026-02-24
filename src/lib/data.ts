@@ -129,7 +129,7 @@ export async function getAllTestimonials() {
 
 // ─── Legal Pages ───────────────────────────────────────
 /** Fetches a single legal page by its slug. */
-export async function getLegalPage(slug: string) {
+export async function getLegalPage(slug: string): Promise<{ title: string; content: string; slug: string } | null> {
     return safeQuery(
         () => prisma.legalPage.findUnique({ where: { slug } }),
         null,
@@ -138,7 +138,7 @@ export async function getLegalPage(slug: string) {
 }
 
 /** Fetches all legal pages for admin panel. */
-export async function getAllLegalPages() {
+export async function getAllLegalPages(): Promise<Array<{ id: string; title: string; slug: string; updatedAt: Date }>> {
     return safeQuery(
         () => prisma.legalPage.findMany(),
         [],
