@@ -1,33 +1,22 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import pg from "pg";
+import { supabaseAdmin } from "../src/lib/supabase";
 import "dotenv/config";
 
 async function main() {
-    const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-    const adapter = new PrismaPg(pool);
-    const prisma = new PrismaClient({ adapter });
-
     console.log("🚀 Updating Home Page and Services content...");
 
     try {
         // --- Update Home Page Hero ---
-        await prisma.homePage.upsert({
-            where: { id: "singleton" },
-            update: {
-                heroTitle: "Easiest Way to Design Beautiful Homes and Spaces",
-                heroDescription: "House plan, 3D building elevation designs, and interior designing services at best rates. Get your home expertly designed fast easy and affordably.",
-                heroButtonText: "Explore Designs",
-                heroButtonLink: "/services",
-            },
-            create: {
+        const { error: heroError } = await supabaseAdmin
+            .from("HomePage")
+            .upsert({
                 id: "singleton",
                 heroTitle: "Easiest Way to Design Beautiful Homes and Spaces",
                 heroDescription: "House plan, 3D building elevation designs, and interior designing services at best rates. Get your home expertly designed fast easy and affordably.",
                 heroButtonText: "Explore Designs",
                 heroButtonLink: "/services",
-            },
-        });
+            });
+
+        if (heroError) throw heroError;
         console.log("  ✅ Hero section updated");
 
         // --- Update Services ---
@@ -76,21 +65,16 @@ async function main() {
             },
         ];
 
-        for (const s of services) {
-            await prisma.service.upsert({
-                where: { slug: s.slug },
-                update: s,
-                create: s,
-            });
-        }
+        const { error: servicesError } = await supabaseAdmin
+            .from("Service")
+            .upsert(services);
+
+        if (servicesError) throw servicesError;
         console.log(`  ✅ ${services.length} services updated`);
 
         console.log("\n✨ Success: Content updated in the database!");
     } catch (error) {
         console.error("❌ Error updating content:", error);
-    } finally {
-        await prisma.$disconnect();
-        await pool.end();
     }
 }
 

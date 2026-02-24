@@ -5,7 +5,7 @@ This document provides an overview of the "Advika Vastu-Structural" (P M & Assoc
 ## Tech Stack
 - **Framework**: [Next.js](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
-- **Database**: [Prisma](https://www.prisma.io/) with PostgreSQL (Supabase)
+- **Database**: PostgreSQL (Supabase) via [Supabase SDK](https://supabase.com/docs/reference/javascript/introduction)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/)
 - **Payments**: [Razorpay](https://razorpay.com/)
@@ -23,13 +23,12 @@ The core application code.
 - **`/components`**: Reusable UI components.
   - **`/layout`**: Header, Footer, and structural components.
   - **`/ui`**: Base UI components (Buttons, Inputs, Dialogs).
-- **`/lib`**: Utility functions, Prisma client, and shared logic.
+- **`/lib`**: Utility functions, Supabase client (`supabase.ts`), and shared logic.
 - **`/hooks`**: Custom React hooks.
 - **`/types`**: TypeScript type definitions.
 
-### `/prisma`
-- **`schema.prisma`**: Database schema definition.
-- **`seed.ts`**: Database seeding script for development.
+### `/prisma` (Internal/Reference Only)
+- **`schema.sql`**: Database schema definition for Supabase initialization.
 
 ### `/public`
 - Static assets like images, icons, and fonts.
@@ -43,7 +42,4 @@ The core application code.
 
 ## Common Workflows
 - **Development**: `npm run dev`
-- **Database Migration**: `npx prisma migrate dev`
-- **Database Studio**: `npx prisma studio`
-- **Seeding Database**: `npm run db:seed`
 - **Build for Production**: `npm run build`
