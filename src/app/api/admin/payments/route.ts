@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { apiError } from "@/lib/api-utils";
+import type { Payment } from "@prisma/client";
 
 // GET — List all payments with optional filters
 export async function GET(req: Request) {
@@ -32,7 +33,7 @@ export async function GET(req: Request) {
         });
 
         // Summary stats
-        const allPayments = await prisma.payment.findMany();
+        const allPayments: Payment[] = await prisma.payment.findMany();
         const totalRevenue = allPayments
             .filter((p) => p.status === "PAID")
             .reduce((sum, p) => sum + p.amount, 0);
