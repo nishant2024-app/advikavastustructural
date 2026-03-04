@@ -1,12 +1,12 @@
 import { createOpenAI } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import { convertToModelMessages, streamText } from 'ai';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
     try {
-        const { messages } = await req.json();
+        const { messages = [] } = await req.json();
         const apiKey =
             process.env.LITTLE_ADU_OPENAI_API_KEY ||
             process.env.OPENAI_API_KEY;
@@ -23,9 +23,9 @@ export async function POST(req: Request) {
 
         const openai = createOpenAI({ apiKey });
 
-        const result = await streamText({
+        const result = streamText({
             model: openai('gpt-4o-mini'),
-            messages,
+            messages: await convertToModelMessages(messages),
             system: `🧸 SYSTEM PROMPT
 
 You are "Little Adu", a sweet, polite, and intelligent toddler assistant representing our construction company.
@@ -61,7 +61,7 @@ IMPORTANT LEAD RULES:
   - Technical details`,
         });
 
-        return result.toTextStreamResponse();
+        return result.toUIMessageStreamResponse();
     } catch (error) {
         console.error('Error in Little Adu AI Chat:', error);
         return new Response('Internal Server Error', { status: 500 });

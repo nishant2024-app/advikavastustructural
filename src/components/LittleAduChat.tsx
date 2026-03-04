@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useChat } from 'ai/react';
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport, UIMessage } from 'ai';
 import { X, Send, User, Phone, Loader2 } from 'lucide-react';
 import { saveAiLead } from '@/lib/chatbot-service';
 
@@ -10,15 +11,28 @@ export default function LittleAduChat() {
     const [step, setStep] = useState<'name' | 'phone' | 'chat'>('name');
     const [leadContent, setLeadContent] = useState({ name: '', phone: '' });
     const [inputValue, setInputValue] = useState('');
+    const [chatInput, setChatInput] = useState('');
     const [isSaving, setIsSaving] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-        api: '/api/ai-chat',
-        initialMessages: [],
+    const { messages, sendMessage, status } = useChat({
+        transport: new DefaultChatTransport({
+            api: '/api/ai-chat',
+        }),
     });
+    const isLoading = status === 'submitted' || status === 'streaming';
+
+    const getMessageText = (message: UIMessage) => {
+        return message.parts.reduce((fullText, part) => {
+            if (part.type === 'text') {
+                return fullText + part.text;
+            }
+
+            return fullText;
+        }, '');
+    };
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -69,6 +83,17 @@ export default function LittleAduChat() {
                 setErrorMsg('Something went wrong. Please try again.');
             }
         }
+    };
+
+    const handleChatSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const trimmedInput = chatInput.trim();
+        if (!trimmedInput || isLoading) {
+            return;
+        }
+
+        await sendMessage({ text: trimmedInput });
+        setChatInput('');
     };
 
     return (
@@ -124,7 +149,7 @@ export default function LittleAduChat() {
                                         <span className="text-sm">🧸</span>
                                     </div>
                                     <div className="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 text-sm text-gray-800">
-                                        Hi 👋 I'm Little Adu! I can help you with house plans and Vastu. What is your good name?
+                                        Hi 👋 I&apos;m Little Adu! I can help you with house plans and Vastu. What is your good name?
                                     </div>
                                 </div>
 
@@ -161,7 +186,7 @@ export default function LittleAduChat() {
                                         Thanks, {leadContent.name}! How can I help you regarding home construction today?
                                     </div>
                                 </div>
-                                {messages.map((m: any) => (
+                                {messages.map((m) => (
                                     <div
                                         key={m.id}
                                         className={`flex items-start gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'
@@ -178,7 +203,7 @@ export default function LittleAduChat() {
                                                 : 'bg-white border border-gray-100 text-gray-800 rounded-tl-sm'
                                                 }`}
                                         >
-                                            {m.content}
+                                            {getMessageText(m)}
                                         </div>
                                     </div>
                                 ))}
@@ -227,18 +252,18 @@ export default function LittleAduChat() {
                                 </button>
                             </form>
                         ) : (
-                            <form onSubmit={handleSubmit} className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-full border border-gray-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20 transition-all">
+                            <form onSubmit={handleChatSubmit} className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-full border border-gray-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20 transition-all">
                                 <input
                                     name="prompt"
-                                    value={input}
-                                    onChange={handleInputChange}
+                                    value={chatInput}
+                                    onChange={(e) => setChatInput(e.target.value)}
                                     placeholder="Ask Little Adu about your dream home..."
                                     className="flex-1 bg-transparent border-none focus:outline-none text-sm px-4 py-1.5 h-full w-full"
                                     disabled={isLoading}
                                 />
                                 <button
                                     type="submit"
-                                    disabled={!input.trim() || isLoading}
+                                    disabled={!chatInput.trim() || isLoading}
                                     className="bg-primary hover:bg-primary/90 disabled:bg-gray-300 disabled:text-gray-500 text-white p-2.5 rounded-full transition-colors flex items-center justify-center shadow-sm"
                                 >
                                     <Send size={16} />

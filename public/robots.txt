@@ -1,0 +1,17 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /thank-you
+Disallow: /thank-you/*
+
+# Host
+Host: https://www.advikavastu.com
+
+# Sitemaps
+Sitemap: https://www.advikavastu.com/sitemap.xml
