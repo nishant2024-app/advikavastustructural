@@ -121,16 +121,27 @@ export default function Footer({ homeData }: { homeData?: HomePageData | null })
 
                 {/* Bottom */}
                 <div className="border-t border-white/10 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p className="text-sm text-white/50">
-                        {homeData?.footerContent ? (
-                            homeData.footerContent.replace("{year}", new Date().getFullYear().toString())
-                        ) : (
-                            <>&copy; {new Date().getFullYear()} Advika Vastu-Structural. All rights reserved.</>
-                        )}
+
+                    <p className="text-sm text-white/50 text-center md:text-left">
+                        © {new Date().getFullYear()} Advika Vastu-Structural. All rights reserved. <br className="md:hidden" />
+                        Design & Developed by{" "}
+                        <a
+                            href="https://softvuetechnology.in"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gold-accent hover:underline"
+                        >
+                            Softvue Technology
+                        </a>
                     </p>
-                    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-1 text-sm text-white/40 hover:text-gold-accent transition-colors">
+
+                    <button
+                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                        className="flex items-center gap-1 text-sm text-white/40 hover:text-gold-accent transition-colors"
+                    >
                         Back to top <ArrowUp className="w-3.5 h-3.5" />
                     </button>
+
                 </div>
             </div>
         </footer>

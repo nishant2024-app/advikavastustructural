@@ -75,7 +75,7 @@ export default function ContactContent({ settings }: ContactContentProps) {
 
     const phoneList = settings.phone ? [settings.phone] : [];
     const emailList = settings.email ? [settings.email] : [];
-    const activePhone = phoneList[0] || "+91 9284242634";
+    const activePhone = phoneList[0] || "+91 9067969756";
 
     // Fallbacks
     const fallbackAddress = "Plot No -04, Om Sai Nagar, Besa, / Nagpur - 440027";
@@ -85,14 +85,14 @@ export default function ContactContent({ settings }: ContactContentProps) {
         {
             icon: Phone,
             title: "Phone",
-            details: phoneList.length > 0 ? phoneList : ["+91 9284242634"],
+            details: phoneList.length > 0 ? phoneList : ["+91 9067969756"],
             action: `tel:${activePhone.replace(/[^0-9+]/g, '')}`,
         },
         {
             icon: Mail,
             title: "Email",
-            details: emailList.length > 0 ? emailList : ["admin@advikavastustructural.com"],
-            action: `mailto:${emailList[0] || "admin@advikavastustructural.com"}`,
+            details: emailList.length > 0 ? emailList : ["admin@vastustructural.com"],
+            action: `mailto:${emailList[0] || "admin@vastustructural.com"}`,
         },
         {
             icon: Clock,

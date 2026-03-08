@@ -20,7 +20,9 @@ function mapQuerySnapshot(snapshot: FirebaseFirestore.QuerySnapshot) {
         // Prevent Next.js Error: "Only plain objects can be passed to Client Components"
         // Convert any Firebase Timestamps to standard serializable string primitives.
         const serializedData = Object.entries(data).reduce((acc, [key, value]) => {
-            acc[key] = value && typeof value === 'object' && '_seconds' in value ? new Date(value.toDate()).toISOString() : value;
+            acc[key] = value && typeof value === 'object' && '_seconds' in value && typeof value.toDate === 'function'
+                ? new Date(value.toDate()).toISOString()
+                : value;
             return acc;
         }, {} as Record<string, any>);
         return { id: doc.id, ...serializedData } as any;
@@ -104,7 +106,9 @@ export async function getProductById(id: string) {
 
             const data = doc.data() as any;
             const serializedData = Object.entries(data).reduce((acc, [key, value]) => {
-                acc[key] = value && typeof value === 'object' && '_seconds' in value ? new Date((value as any).toDate()).toISOString() : value;
+                acc[key] = value && typeof value === 'object' && '_seconds' in value && typeof (value as any).toDate === 'function'
+                    ? new Date((value as any).toDate()).toISOString()
+                    : value;
                 return acc;
             }, {} as Record<string, any>);
 

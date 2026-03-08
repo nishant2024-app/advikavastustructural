@@ -11,7 +11,7 @@ const stagger = { animate: { transition: { staggerChildren: 0.1 } } };
 
 const timeline = [
     { year: "2009", title: "Founded", description: "Advika Vastu-Structural was established with a vision to transform architectural and Vastu consultancy in India." },
-    { year: "2012", title: "50+ Projects", description: "Crossed 50 successful project completions across residential and commercial segments." },
+    { year: "2012", title: "0+ Projects", description: "Crossed 50 successful project completions across residential and commercial segments." },
     { year: "2015", title: "National Expansion", description: "Expanded operations to serve clients across 15+ states in India." },
     { year: "2018", title: "Digital Transformation", description: "Adopted cutting-edge CAD, BIM, and 3D visualization technologies." },
     { year: "2021", title: "200+ Clients", description: "Reached the milestone of 200+ satisfied clients with a 98% satisfaction rate." },
@@ -31,10 +31,10 @@ interface Props { settings: Record<string, any>; }
 
 export default function AboutContent({ settings }: Props) {
     const stats = [
-        { value: settings.stats_projects || "500+", label: "Projects Completed" },
-        { value: settings.stats_clients || "200+", label: "Happy Clients" },
-        { value: settings.stats_states || "28+", label: "States Covered" },
-        { value: settings.stats_experience || "15+", label: "Years Experience" },
+        { value: settings.stats_projects || "300+", label: "Projects Completed" },
+        { value: settings.stats_clients || "100+", label: "Happy Clients" },
+        { value: settings.stats_states || "5+", label: "States Covered" },
+        { value: settings.stats_experience || "10+", label: "Years Experience" },
     ];
 
     return (

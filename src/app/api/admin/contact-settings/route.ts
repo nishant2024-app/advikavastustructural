@@ -14,8 +14,8 @@ export async function GET(req: Request) {
 
         if (!doc.exists) {
             return NextResponse.json({
-                email: "admin@advikavastustructural.com",
-                phone: "+91-9284242634",
+                email: "admin@vastustructural.com",
+                phone: "+91-9067969756",
                 address: "Plot No -04, Om Sai Nagar, Besa, / Nagpur - 440027",
                 workingHours: "Monday - Saturday: / 10:00 AM - 6:00 PM",
                 socialLinks: { facebook: "", instagram: "", linkedin: "", twitter: "" }

@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL || 'https://www.advikavastu.com'),
+  metadataBase: new URL(process.env.SITE_URL || 'https://vastustructural.com'),
   title: {
     default: "Advika Vastu-Structural | Architecture, Planning & Vastu Consultancy",
     template: "%s | Advika Vastu-Structural",
@@ -28,6 +28,8 @@ export const metadata: Metadata = {
     "building design",
     "India",
     "Advika Vastu-Structural",
+    "Vastu Structural",
+    "2d building plan"
   ],
   openGraph: {
     type: "website",
