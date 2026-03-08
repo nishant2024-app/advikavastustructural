@@ -11,7 +11,7 @@ Disallow: /thank-you
 Disallow: /thank-you/*
 
 # Host
-Host: https://www.advikavastu.com
+Host: https://vastustructural.com
 
 # Sitemaps
-Sitemap: https://www.advikavastu.com/sitemap.xml
+Sitemap: https://vastustructural.com/sitemap.xml
